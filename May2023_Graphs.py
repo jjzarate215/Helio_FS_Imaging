@@ -10,8 +10,8 @@ import sunpy
 from sunpy.net import Fido
 from sunpy.net import attrs as a
 
-jsoc_email = "jjzarate215@berkeley.edu"
 
+jsoc_email = "jjzarate215@berkeley.edu"
 
 query = Fido.search(
     a.Time('2023.05.01_00:00:00_TAI', '2023.05.31_12:00:00_TAI'),
@@ -24,7 +24,41 @@ directory = 'C:\\Users\\Jjzar\\OneDrive\\Documents\\ASSURE\\ASSURE 2023\\Explori
 download_fsi = Fido.fetch(query, path = directory)
 
 #########################################################################
+import os
+from astropy.io import fits
+import matplotlib.pyplot as plt
+import numpy as np
+
+fsi_directory = 'C:\\Users\\Jjzar\\OneDrive\\Documents\\ASSURE\\ASSURE 2023\\Exploring the Unseen Sun\\Far-SideImagingData\\May2023'
+fsi_images = []
+fsi_images_data =[]
+
+for fsi_file in os.listdir(fsi_directory):
+    if os.path.isfile(os.path.join(fsi_directory, fsi_file)):
+        fsi_images.append(fsi_file)
+
+        hdu = fits.open(os.path.join(fsi_directory, fsi_file))
+        image_data = hdu[0].data
+        hdu.close()
+
+        fsi_images_data.append(image_data)
 
 
+print(fsi_images)
+print(len(fsi_images))
+
+avg_may = []
+for image_data in fsi_images_data:
+    average_value = np.nanmean(image_data)
+
+    avg_may.append(average_value)
+
+print(avg_may)
+print(len(avg_may))
+
+
+# print(fsi_images[2])
+# plt.imshow(fsi_images_data[2], cmap = 'gray')
+# plt.show()
 
 
