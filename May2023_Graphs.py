@@ -35,6 +35,9 @@ import matplotlib.pyplot as plt
 import sunpy.map
 from scipy import ndimage
 import numpy as np
+## Added two new imports here
+from datetime import datetime
+from matplotlib import ticker
 
 fsi_images = []
 fsi_images_data =[]
@@ -67,11 +70,23 @@ for fits_file in os.listdir(fsi_directory):
 #print(med_may)
 #print(len(med_may))
 
+## Converts header string dates to datetime object and then to an alternatively formatted string output
+dt=[]
+for i in fsi_headers:
+	dt.append(datetime.strptime(i,'%Y-%m-%dT%H:%M:%S.%f').strftime('%b %d'))
 
-plt.scatter(fsi_headers, avg_may, color = 'red')
+## This line is useful if you want to ultimately plot more than one plot in the same figure
+fig, axs = plt.subplots(1, 1, figsize=(8, 5), layout='constrained')
+
+axs.scatter(dt, avg_may, color = 'red') #note the new x-axis variable!
 plt.xlabel('Observed Time')
 plt.ylabel('Average Pixel Value')
 plt.title('Untitled')
+
+axs.tick_params(axis='x', rotation=55)
+axs.xaxis.set_major_locator(ticker.MultipleLocator(7)) # right now I have this set to only show one date per week (major, with tick labels)
+axs.xaxis.set_minor_locator(ticker.MultipleLocator(1)) # this is set to show one tick per day (minor, no labels)
+
 plt.show()
 
 
