@@ -40,7 +40,7 @@ from datetime import datetime
 from matplotlib import ticker
 
 fsi_images = []
-fsi_images_data =[]
+fsi_data =[]
 fsi_headers = []
 avg_may = []
 med_may = []
@@ -56,7 +56,7 @@ for fits_file in os.listdir(fsi_directory):
         median_value = hdu[0].header['DATAMEDN']
         hdu.close()
 
-        fsi_images_data.append(image_data)
+        fsi_data.append(image_data)
         fsi_headers.append(image_header)
         avg_may.append(average_value)
         med_may.append(median_value)
@@ -81,7 +81,7 @@ fig, axs = plt.subplots(1, 1, figsize=(8, 5), layout='constrained')
 axs.scatter(dt, avg_may, color = 'red') #note the new x-axis variable!
 plt.xlabel('Observed Time')
 plt.ylabel('Average Pixel Value')
-plt.title('Untitled')
+plt.title('Average Phase Shift (May 2023)')
 
 axs.tick_params(axis='x', rotation=55)
 axs.xaxis.set_major_locator(ticker.MultipleLocator(7)) # right now I have this set to only show one date per week (major, with tick labels)
@@ -102,16 +102,37 @@ import astropy.units as u
 
 
 
-img = 'C:\\Users\\Jjzar\\OneDrive\\Documents\\ASSURE\\ASSURE 2023\\Exploring the Unseen Sun\\Far-SideImagingData\\May2023\\hmi.td_fsi_12h.20230504_000000_TAI.data.fits'
 
-hdulist = fits.open(img)
-data = hdulist[0].data
+#img = fsi_directory + "\\hmi.td_fsi_12h.20230504_000000_TAI.data.fits"
 
-mask = data < data.mean() - data.std() * 2.5
+#hdulist = fits.open(img)
+#data = hdulist[0].data
 
-data_masked = data * mask
 
-labeled_array, num_features = ndimage.label(mask)
+
+#mask = data < data.mean() - data.std() * 2.5
+#data_masked = data * mask
+
+mask = []
+data_masked = []
+sunspots_num = []
+
+for i in range(len(fsi_data)):
+    m = fsi_data[i] < avg_may[i] - fsi_data[i].std() * 2.5
+    d_m = fsi_data[i] * m
+    #mean
+    labels, n = ndimage.label(m)
+
+    mask.append(m)
+    data_masked.append(d_m)
+    sunspots_num.append(n)
+
+print(sunspots_num)
+print(len(sunspots_num))
+
+
+#improve on the future
+labeled_array, num_features = ndimage.label(mask[50])
 bounding_boxes = ndimage.find_objects(labeled_array)
 
 centers = []
@@ -120,11 +141,15 @@ for box in bounding_boxes:
     x_center = (box[1].start + box[1].stop - 1) / 2
     centers.append((x_center, y_center))
 
-labels, n = ndimage.label(mask)
-num_dark_spots = n
-print("Number of sunspots: ", num_dark_spots)
+# labels, n = ndimage.label(mask[0])
+# num_dark_spots = n
+#print("Number of sunspots: ", num_dark_spots)
 
-plt.imshow(data_masked, cmap = "gray", origin = "lower")
+print("Number of sunspots: ", )
+
+
+
+plt.imshow(data_masked[50], cmap = "gray", origin = "lower")
 plt.colorbar()
 
 x_coord, y_coord = zip(*centers)
