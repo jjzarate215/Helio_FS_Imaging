@@ -147,7 +147,8 @@ for box in bounding_boxes:
 
 print("Number of sunspots: ", )
 
-
+plt.xticks([])
+plt.yticks([])
 
 plt.imshow(data_masked[50], cmap = "gray", origin = "lower")
 plt.colorbar()
@@ -156,7 +157,9 @@ x_coord, y_coord = zip(*centers)
 plt.scatter(x_coord, y_coord, c = "red", marker = "x")
 
 plt.show()
-                                   
+
+
+#helllo,testing,git
 # mask = data > data.min() * 0.50
 
 # data2 = ndimage.gaussian_filter(data * ~mask, 14)
