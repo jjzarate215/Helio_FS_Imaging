@@ -13,7 +13,7 @@ series = 'hmi.td_fsi_12h'
 email = 'jjzarate215@berkeley.edu'
 f_rec = '2011.02.01_00:00:00_TAI'      #year.month.day_time_TAI
 l_rec = '2022.02.01_12:00:00_TAI'
-fsi_directory = 'C:\\Users\\Jjzar\\OneDrive\\Documents\\ASSURE\\ASSURE 2023\\Exploring the Unseen Sun\\Far-SideImagingData\\2011-2022'
+fsi_directory = 'C:\\Users\\Jjzar\\OneDrive\\Documents\\ASSURE\\ASSURE 2023\\Exploring the Unseen Sun\\FSI_data\\2011-2022'
 
 #hmi_downloader(series, email, f_rec, l_rec, fsi_directory)
 results = fsi.extract_fsi_data(fsi_directory)
@@ -95,3 +95,8 @@ plt.show()
 # plt.scatter(x_coord, y_coord, c = "red", marker = "x")
 
 # plt.show()
+
+
+
+
+

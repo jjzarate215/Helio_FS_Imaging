@@ -20,19 +20,18 @@ from scipy import ndimage
 import numpy as np
 
 
-######################################## downloads JSOC time-distance helioseismic far-side images ############
 def hmi_downloader(jsoc_series, jsoc_email, first_rec, last_rec, dwnld_dir):
     
-     """ downloads time-distance helioseismic far-side images
-       from jsoc server and extracts data """
+     """ downloads time-distance fsi from jsoc server, parameters include  """
     
-     query = Fido.search(a.Time(first_rec, last_rec),a.jsoc.Series(jsoc_series),a.jsoc.Notify(jsoc_email))
+     query = Fido.search(a.Time(first_rec, last_rec), a.jsoc.Series(jsoc_series),a.jsoc.Notify(jsoc_email))
      
      dwnld = Fido.fetch(query, path = dwnld_dir, progress = True, overwrite = False)
 
 
 ##################################### extracts data from time-distance helioseismic far-side images ###########
 def extract_fsi_data(dwnld_dir):
+    """ extracts data from """
 
     fsi_images = []
     fsi_data =[]
