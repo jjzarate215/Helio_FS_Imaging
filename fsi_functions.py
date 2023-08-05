@@ -20,18 +20,16 @@ from scipy import ndimage
 import numpy as np
 
 
-def hmi_downloader(jsoc_series, jsoc_email, first_rec, last_rec, dwnld_dir):
+def hmi_downloader(jsoc_series, jsoc_email, start_date, end_date, dwnld_dir):
     
-     """ downloads time-distance fsi from jsoc server, parameters include  """
+     """ downloads time-distance fsi from jsoc server"""
     
-     query = Fido.search(a.Time(first_rec, last_rec), a.jsoc.Series(jsoc_series),a.jsoc.Notify(jsoc_email))
-     
+     query = Fido.search(a.Time(start_date, end_date), a.jsoc.Series(jsoc_series),a.jsoc.Notify(jsoc_email))
      dwnld = Fido.fetch(query, path = dwnld_dir, progress = True, overwrite = False)
 
 
-##################################### extracts data from time-distance helioseismic far-side images ###########
-def extract_fsi_data(dwnld_dir):
-    """ extracts data from """
+def extract_fsi_data(fsi_dwnld_dir):
+    """ extracts data from time-distance helioseismic far-side images """
 
     fsi_images = []
     fsi_data =[]
@@ -40,11 +38,11 @@ def extract_fsi_data(dwnld_dir):
     mean_val = []
     median_val = []
 
-    for fits_file in os.listdir(dwnld_dir):
-        if os.path.isfile(os.path.join(dwnld_dir, fits_file)):
+    for fits_file in os.listdir(fsi_dwnld_dir):
+        if os.path.isfile(os.path.join(fsi_dwnld_dir, fits_file)):
             fsi_images.append(fits_file)
 
-            hdu = fits.open(os.path.join(dwnld_dir, fits_file))
+            hdu = fits.open(os.path.join(fsi_dwnld_dir, fits_file))
             image_data = hdu[0].data
             image_header = hdu[0].header['DATE-OBS']
             average_value = hdu[0].header['DATAMEAN']
